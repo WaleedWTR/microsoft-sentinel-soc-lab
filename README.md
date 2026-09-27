@@ -1,5 +1,7 @@
 # Microsoft Sentinel SOC Lab
 
+![Bicep validation](https://github.com/WaleedWTR/microsoft-sentinel-soc-lab/actions/workflows/bicep-validate.yml/badge.svg)
+
 A portfolio SOC engineering lab built around Microsoft Sentinel, Log Analytics, KQL hunting, detection engineering and incident response.
 
 > **Portfolio note:** This is a sanitised lab/reconstruction using synthetic data. It contains no employer, government, tenant or production information.
