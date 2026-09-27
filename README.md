@@ -86,6 +86,16 @@ See [Detection Catalogue](detections/detection-catalogue.md).
 
 The [SOC Incident Playbook](docs/incident-playbook.md) provides a repeatable investigation structure covering validation, scoping, containment, evidence and recovery.
 
+## Key evidence and documentation
+
+- [Detection catalogue](detections/detection-catalogue.md)
+- [MITRE ATT&CK mapping](detections/mitre-attack-mapping.md)
+- [PowerShell investigation example](investigations/powershell-investigation.md)
+- [Failed sign-in investigation example](investigations/failed-signins-investigation.md)
+- [SOC incident playbook](docs/incident-playbook.md)
+- [Automation / triage playbook concept](automation/triage-playbook.md)
+- [Technical references](docs/references.md)
+
 ## Skills demonstrated
 
 **Microsoft Sentinel · KQL · Log Analytics · Bicep · Detection Engineering · Threat Hunting · Incident Response · Azure Security**
