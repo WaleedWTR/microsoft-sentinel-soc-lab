@@ -3,17 +3,23 @@ name: Validate Bicep
 on:
   push:
     paths:
-      - "infrastructure/**"
+      - "**/*.bicep"
+      - "**/*.bicepparam"
       - ".github/workflows/bicep-validate.yml"
   pull_request:
     paths:
-      - "infrastructure/**"
+      - "**/*.bicep"
+      - "**/*.bicepparam"
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Lint Bicep
+        uses: azure/cli@v2
+        with:
+          inlineScript: az bicep lint --file infrastructure/main.bicep
       - name: Build Bicep
         uses: azure/cli@v2
         with:
