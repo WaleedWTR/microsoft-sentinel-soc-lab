@@ -1,0 +1,37 @@
+// Repeated failed sign-ins followed by a successful sign-in
+let Lookback = 24h;
+let FailureThreshold = 5;
+let Failed =
+    SigninLogs
+    | where TimeGenerated > ago(Lookback)
+    | where ResultType != 0
+    | summarize FailedAttempts=count(), FirstFailure=min(TimeGenerated), LastFailure=max(TimeGenerated)
+        by UserPrincipalName, IPAddress
+    | where FailedAttempts >= FailureThreshold;
+let Success =
+    SigninLogs
+    | where TimeGenerated > ago(Lookback)
+    | where ResultType == 0
+    | summarize SuccessTime=min(TimeGenerated)
+        by UserPrincipalName, IPAddress;
+Failed
+| join kind=inner Success on UserPrincipalName, IPAddress
+| where SuccessTime between (FirstFailure .. LastFailure + 30m)
+| project UserPrincipalName, IPAddress, FailedAttempts, FirstFailure, LastFailure, SuccessTime
+| order by FailedAttempts desc;
+
+// High sign-in failure volume by source IP
+SigninLogs
+| where TimeGenerated > ago(1h)
+| where ResultType != 0
+| summarize Failures=count(), Users=dcount(UserPrincipalName), UserList=make_set(UserPrincipalName, 20) by IPAddress
+| where Failures >= 20 or Users >= 5
+| order by Failures desc;
+
+// Rare country/region observed for a user
+SigninLogs
+| where TimeGenerated > ago(30d)
+| extend Country=tostring(LocationDetails.countryOrRegion)
+| summarize SignIns=count(), Countries=make_set(Country, 50) by UserPrincipalName, bin(TimeGenerated, 1d)
+| where array_length(Countries) > 1
+| order by SignIns desc;
